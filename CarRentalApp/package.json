@@ -10,16 +10,23 @@
   },
   "dependencies": {
     "@react-native-vector-icons/common": "^0.0.1-alpha.10",
+    "@react-navigation/drawer": "^6.7.2",
     "@react-navigation/native": "^6.1.17",
     "@react-navigation/stack": "^6.3.29",
+    "@types/react": "~18.2.79",
+    "axios": "^1.7.7",
     "expo": "~51.0.14",
     "expo-status-bar": "~1.12.1",
+    "firebase": "^10.12.4",
     "react": "18.2.0",
     "react-native": "0.74.2",
-    "react-native-swiper": "^1.6.0"
+    "react-native-datepicker": "^1.7.2",
+    "react-native-swiper": "^1.6.0",
+    "typescript": "~5.3.3"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0"
+    "@babel/core": "^7.20.0",
+    "@types/react-native": "^0.73.0"
   },
   "private": true
 }

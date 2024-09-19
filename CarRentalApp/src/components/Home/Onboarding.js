@@ -7,40 +7,40 @@ const slides = [
         title: 'Business',
         description1: 'Cùng bạn chinh phục mọi hợp đồng',
         description2: 'Xe sang cho doanh nhân thành đạt',
-        image: require('../../assets/images/onboard1.jpg')
+        image: require('../../assets/images/ob1.jpg')
     },
     {
         key: 'family',
         title: 'Family',
         description1: 'Hành trình hạnh phúc',
         description2: 'Xe rộng rãi cho cả gia đình',
-        image: require('../../assets/images/onb2.png')
+        image: require('../../assets/images/ob2.jpg')
     },
     {
         key: 'woman',
         title: 'Woman',
         description1: 'Phong cách và an toàn',
         description2: 'Xe đẹp cho phụ nữ hiện đại',
-        image: require('../../assets/images/woman.avif')
+        image: require('../../assets/images/ob3.jpg')
     },
     {
         key: 'pleasure',
         title: 'Pleasure',
         description1: 'Trải nghiệm thú vị',
         description2: 'Xe thể thao cho những chuyến đi đam mê',
-        image: require('../../assets/images/onb4.png')
+        image: require('../../assets/images/ob4.jpg')
     },
     {
         key: 'organizations',
         title: 'Organizations',
         description1: 'Hợp tác vì sự phát triển',
         description2: 'Xây dựng cộng đồng vững mạnh',
-        image: require('../../assets/images/onboard5Organiz.jpg')
+        image: require('../../assets/images/ob5.png')
     }
 ];
-const Onboarding = ({navigation}) => {
-    const handleHomePress = () => {
-        navigation.navigate('Home');
+const Onboarding = ({ navigation }) => {
+    const handleStartPress = () => {
+        navigation.navigate('Welcome');
     };
     return (
         <Swiper autoplay loop style={styles.wrapper}>
@@ -59,7 +59,7 @@ const Onboarding = ({navigation}) => {
                         />
                     </View>
                     <View style={[styles.section, { flex: 1, backgroundColor: '#fff' }]}>
-                        <TouchableOpacity style={styles.button} onPress={handleHomePress}>
+                        <TouchableOpacity style={styles.button} onPress={handleStartPress}>
                             <Text style={styles.buttonText} >Bắt Đầu</Text>
                         </TouchableOpacity>
                     </View>
