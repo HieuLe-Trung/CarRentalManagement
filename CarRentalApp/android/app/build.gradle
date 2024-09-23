@@ -117,6 +117,9 @@ android {
             useLegacyPackaging (findProperty('expo.useLegacyPackaging')?.toBoolean() ?: false)
         }
     }
+    project.ext.react = [
+        enableHermes: true
+    ]       
 }
 
 // Apply static values from `gradle.properties` to the `android.packagingOptions`
