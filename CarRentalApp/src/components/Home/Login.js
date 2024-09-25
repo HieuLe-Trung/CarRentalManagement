@@ -36,9 +36,8 @@ const Login = ({ navigation }) => {
             });
 
             const data = await response.json();
-
             if (response.ok) {
-                navigation.navigate('Home');
+                navigation.navigate('HomeDrawer', { screen: 'Home' });
             } else {
                 Alert.alert("Lỗi", "Sai username hoặc mật khẩu");
             }

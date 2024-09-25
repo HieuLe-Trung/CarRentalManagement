@@ -4,12 +4,12 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import axios from 'axios';
 import CarList from '../CarList';
 
-const Home = () => {
+const Home = ({navigation}) => {
   const [isLoading, setIsLoading] = useState(true);
   const [carBrands, setCarBrands] = useState([]);
   const [cars, setCars] = useState([]);
   const [filteredCars, setFilteredCars] = useState([]);
-  const [selectedBrandId, setSelectedBrandId] = useState(null); // State for selected brand
+  const [selectedBrandId, setSelectedBrandId] = useState(null); 
 
   useEffect(() => {
     const fetchCarBrands = async () => {
@@ -32,7 +32,7 @@ const Home = () => {
       try {
         const response = await axios.get('http://192.168.1.5:8000/rent-car/');
         setCars(response.data);
-        setFilteredCars(response.data); // Show all cars initially
+        setFilteredCars(response.data); 
       } catch (error) {
         console.error('Lỗi khi lấy dữ liệu:', error);
       } finally {
@@ -46,7 +46,7 @@ const Home = () => {
   const filterCarsByBrand = (brandId) => {
     const filtered = cars.filter(car => car.category === brandId);
     setFilteredCars(filtered.length > 0 ? filtered : cars);
-    setSelectedBrandId(brandId); // Update selected brand ID
+    setSelectedBrandId(brandId);
   };
 
   if (isLoading) {
@@ -61,7 +61,7 @@ const Home = () => {
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ flex: 1 }}>
         <View style={styles.header}>
-          <TouchableOpacity onPress={() => alert('Menu mở ra!')}>
+          <TouchableOpacity onPress={() => navigation.openDrawer()}>
             <Icon name="bars" size={24} color="#000" />
           </TouchableOpacity>
 
@@ -89,7 +89,7 @@ const Home = () => {
               <TouchableOpacity
                 style={[
                   styles.brandItem,
-                  selectedBrandId === item.id && styles.selectedBrandItem // Highlight selected brand
+                  selectedBrandId === item.id && styles.selectedBrandItem 
                 ]}
                 onPress={() => filterCarsByBrand(item.id)}
               >
