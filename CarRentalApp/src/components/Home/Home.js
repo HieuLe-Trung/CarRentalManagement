@@ -72,7 +72,7 @@ const Home = ({navigation}) => {
             />
           </View>
 
-          <TouchableOpacity style={styles.searchContainer} onPress={() => alert('Tìm xe!')}>
+          <TouchableOpacity style={styles.searchContainer} onPress={() => navigation.navigate('DatePickerComponent')}>
             <Icon name="search" size={24} color="#000" />
             <Text style={styles.searchText}>Tìm xe</Text>
           </TouchableOpacity>

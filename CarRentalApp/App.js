@@ -8,6 +8,8 @@ import Register from './src/components/Home/Register';
 import Login from './src/components/Home/Login';
 import Home from './src/components/Home/Home';
 import About from './src/components/About';
+import SaleCar from './src/components/SaleCar';
+import DatePickerComponent from './src/components/DatePickerComponent';
 // import ProfileScreen from './src/components/Profile';
 import CustomDrawerContent from './src/components/CustomDrawerContent'; // Đảm bảo đường dẫn chính xác
 
@@ -25,7 +27,7 @@ const HomeDrawer = () => {
       }}
     >
       <Drawer.Screen name="Thuê xe" component={Home} />
-      <Drawer.Screen name="Mua xe" component={Welcome} />
+      <Drawer.Screen name="Mua xe" component={SaleCar} />
       <Drawer.Screen name="Xe yêu thích" component={Welcome} />
       <Drawer.Screen name="Lịch sử" component={Welcome} />
       <Drawer.Screen name="Chat với cửa hàng" component={Welcome} />
@@ -42,6 +44,7 @@ const App = () => {
         <Stack.Screen name="Welcome" component={Welcome} options={{ headerShown: false }} />
         <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
         <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+        <Stack.Screen name="DatePickerComponent" component={DatePickerComponent} options={{ headerShown: false }} />
         {/* <Stack.Screen name="ProfileScreen" component={ProfileScreen} options={{ headerShown: false }} /> */}
         <Stack.Screen name="HomeDrawer" component={HomeDrawer} options={{ headerShown: false }} />
       </Stack.Navigator>

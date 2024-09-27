@@ -1,13 +1,20 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image, SafeAreaView, TouchableOpacity } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 
-const IntroductionScreen = () => {
+const IntroductionScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        {/* Nút quay lại */}
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <FontAwesome name="arrow-left" size={24} color="#000" />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>Giới thiệu</Text>
+      </View>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.introSection}>
-          <Text style={styles.title}>Giới thiệu về TrungHieu Store</Text>
+          <Text style={styles.title}>TrungHieu Store</Text>
           <Text style={styles.description}>
             Trung Hiếu Store chuyên cung cấp dịch vụ cho thuê và bán xe cũ với chất lượng tốt nhất.
           </Text>
@@ -65,6 +72,18 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     padding: 20,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 10,
+    backgroundColor: '#fff',
+  },
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginLeft: 139,
+    color: '#000',
   },
   introSection: {
     marginBottom: 20,
