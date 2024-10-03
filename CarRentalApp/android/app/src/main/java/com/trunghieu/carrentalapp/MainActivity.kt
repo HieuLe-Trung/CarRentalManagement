@@ -1,4 +1,4 @@
-package com.carrentalapp
+package com.trunghieu.carrentalapp
 
 import android.os.Build
 import android.os.Bundle

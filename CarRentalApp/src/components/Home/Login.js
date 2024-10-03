@@ -21,7 +21,7 @@ const Login = ({ navigation }) => {
         }
 
         try {
-            const response = await fetch('http://192.168.1.5:8000/o/token/', {
+            const response = await fetch('http://192.168.2.24:8000/o/token/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
@@ -37,7 +37,8 @@ const Login = ({ navigation }) => {
 
             const data = await response.json();
             if (response.ok) {
-                navigation.navigate('HomeDrawer', { screen: 'Home' });
+                const token = data.access_token;
+                navigation.navigate('HomeDrawer', { token });
             } else {
                 Alert.alert("Lỗi", "Sai username hoặc mật khẩu");
             }
@@ -46,7 +47,50 @@ const Login = ({ navigation }) => {
             Alert.alert("Lỗi", "Đã xảy ra lỗi trong quá trình đăng nhập.");
         }
     };
+    const handleEmployeeLoginPress = async () => {
+        if (!username || !password) {
+            Alert.alert("Lỗi", "Vui lòng nhập đầy đủ tên đăng nhập và mật khẩu");
+            return;
+        }
 
+        try {
+            const response = await fetch('http://192.168.2.24:8000/o/token/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    username: username,
+                    password: password,
+                    grant_type: 'password',
+                    client_id: '9j6dUaEdBDMrkGrwmddWDYjWOjIdFX0k5RgTqG24',
+                    client_secret: 'mDFYWH0TkmdJDpT1h7gl6dz3PDDaqgbjVNfYWUynr8RDmPYb1sreQSRZLDAbXzKa4hbIp7v66eMLe1s9V7rhe4e6uEVxkxIcf8WzOXpTGPEbAsvNkSM9BHn2tXQdldcM',
+                }).toString()
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                const userInfoResponse = await fetch('http://192.168.2.24:8000/user/current_user/', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${data.access_token}`,
+                    }
+                });
+
+                const userInfo = await userInfoResponse.json();
+                if (userInfo.is_staff) {
+                    navigation.navigate('HomeEmp', { token: data.access_token }); 
+                } else {
+                    Alert.alert("Lỗi", "Tài khoản của bạn không có quyền truy cập vào trang nhân viên.");
+                }
+            } else {
+                Alert.alert("Lỗi", "Sai username hoặc mật khẩu");
+            }
+        } catch (error) {
+            console.error("Lỗi trong quá trình đăng nhập:", error);
+            Alert.alert("Lỗi", "Đã xảy ra lỗi trong quá trình đăng nhập.");
+        }
+    };
     return (
         <TouchableWithoutFeedback onPress={dismissKeyboard}>
             <View style={welcome.containerSign}>
@@ -88,8 +132,8 @@ const Login = ({ navigation }) => {
                 <TouchableOpacity style={welcome.buttonSign} onPress={handleLoginPress}>
                     <Text style={welcome.buttonText}>Đăng nhập</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={[welcome.buttonSign, { bottom: -110, minWidth: '80%', backgroundColor: '#483d8b' }]}>
-                    <Text style={welcome.buttonText}>Đăng nhập với ADMIN</Text>
+                <TouchableOpacity style={[welcome.buttonSign, { bottom: -110, minWidth: '80%', backgroundColor: '#483d8b' }]} onPress={handleEmployeeLoginPress}>
+                    <Text style={welcome.buttonText}>Đăng nhập với tài khoản Nhân Viên</Text>
                 </TouchableOpacity>
                 <Text style={welcome.textHaventAcc}>Bạn chưa có tài khoản?
                     <TouchableOpacity onPress={handleRegisterPress}>

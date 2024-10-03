@@ -106,10 +106,10 @@ export default StyleSheet.create({
         fontWeight: 'bold',
     },
     loaderContainer: {
-        ...StyleSheet.absoluteFillObject, // phủ đầy màn hình
+        ...StyleSheet.absoluteFillObject, 
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.3)', // Mờ màn hình với màu nền semi-transparent
+        backgroundColor: 'rgba(0, 0, 0, 0.3)', 
     },
     loader: {
         marginTop: 20,

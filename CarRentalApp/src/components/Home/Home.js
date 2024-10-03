@@ -14,7 +14,7 @@ const Home = ({navigation}) => {
   useEffect(() => {
     const fetchCarBrands = async () => {
       try {
-        const response = await fetch('http://192.168.1.5:8000/categories/');
+        const response = await fetch('http://192.168.2.24:8000/categories/');
         const data = await response.json();
         setCarBrands(data);
       } catch (error) {
@@ -30,7 +30,7 @@ const Home = ({navigation}) => {
   useEffect(() => {
     const fetchCars = async () => {
       try {
-        const response = await axios.get('http://192.168.1.5:8000/rent-car/');
+        const response = await axios.get('http://192.168.2.24:8000/rent-car/');
         setCars(response.data);
         setFilteredCars(response.data); 
       } catch (error) {

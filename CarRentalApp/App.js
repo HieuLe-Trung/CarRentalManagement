@@ -7,29 +7,37 @@ import Welcome from './src/components/Home/Welcome';
 import Register from './src/components/Home/Register';
 import Login from './src/components/Home/Login';
 import Home from './src/components/Home/Home';
+import HomeEmp from './src/components/Employee/HomeEmp.js';
 import About from './src/components/About';
-import SaleCar from './src/components/SaleCar';
+import CarBrandManagement from './src/components/Employee/CarBrandManagement';
+import SaleCarManagement from './src/components/Employee/SaleCarManagement';
+import RentCarManagement from './src/components/Employee/RentCarManagement';
+
+
+// import SaleCar from './src/components/SaleCar';
 import DatePickerComponent from './src/components/DatePickerComponent';
-// import ProfileScreen from './src/components/Profile';
+import Profile from './src/components/Home/Profile';
 import CustomDrawerContent from './src/components/CustomDrawerContent'; // Đảm bảo đường dẫn chính xác
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
-const HomeDrawer = () => {
+const HomeDrawer = ({ route }) => {
+  const { token } = route.params;
+
   return (
     <Drawer.Navigator
       initialRouteName="Home"
-      drawerContent={(props) => <CustomDrawerContent {...props} />} // Dùng prop drawerContent để render
+      drawerContent={(props) => <CustomDrawerContent {...props} token={token} />}
       screenOptions={{
-        headerShown: false, 
+        headerShown: false,
         drawerType: 'back',
       }}
     >
       <Drawer.Screen name="Thuê xe" component={Home} />
-      <Drawer.Screen name="Mua xe" component={SaleCar} />
-      <Drawer.Screen name="Xe yêu thích" component={Welcome} />
-      <Drawer.Screen name="Lịch sử" component={Welcome} />
+      <Drawer.Screen name="Mua xe" component={Welcome} />
+      <Drawer.Screen name="Xe yêu thích" component={Welcome} initialParams={{ token }} />
+      <Drawer.Screen name="Lịch sử" component={Welcome} initialParams={{ token }} />
       <Drawer.Screen name="Chat với cửa hàng" component={Welcome} />
       <Drawer.Screen name="Thông tin cửa hàng" component={About} />
     </Drawer.Navigator>
@@ -44,8 +52,13 @@ const App = () => {
         <Stack.Screen name="Welcome" component={Welcome} options={{ headerShown: false }} />
         <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
         <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+        <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
         <Stack.Screen name="DatePickerComponent" component={DatePickerComponent} options={{ headerShown: false }} />
         {/* <Stack.Screen name="ProfileScreen" component={ProfileScreen} options={{ headerShown: false }} /> */}
+        <Stack.Screen name="HomeEmp" component={HomeEmp} options={{ headerShown: false }} />
+        <Stack.Screen name="CarBrandManagement" component={CarBrandManagement} options={{ headerShown: false }} />
+        <Stack.Screen name="SaleCarManagement" component={SaleCarManagement} options={{ headerShown: false }} />
+        <Stack.Screen name="RentCarManagement" component={RentCarManagement} options={{ headerShown: false }} />
         <Stack.Screen name="HomeDrawer" component={HomeDrawer} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>

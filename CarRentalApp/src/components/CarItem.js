@@ -15,12 +15,12 @@ const CarItem = ({ car, onFavoriteToggle, isForSale }) => {
   return (
     <View style={styles.cardContainer}>
       <View style={styles.imageContainer}>
-        <Image
-          source={{ uri: car.images[0].image }} 
-          style={styles.carImage}
-        />
+      <Image
+        source={{ uri: car.images?.[0]?.image }} 
+        style={styles.carImage}
+      />
         <TouchableOpacity style={styles.heartIcon} onPress={onFavoriteToggle}>
-          <Icon name="heart-o" size={24} color="#f00" />
+          <Icon name="heart-o" size={24} color='#f00'/>
         </TouchableOpacity>
       </View>
       <View style={styles.infoContainer}>
@@ -150,6 +150,7 @@ const styles = StyleSheet.create({
   },
   suitcaseIcon: {
     marginLeft: 10,
+    color:'#4CAF50'
   },
   trips: {
     fontSize: 12,

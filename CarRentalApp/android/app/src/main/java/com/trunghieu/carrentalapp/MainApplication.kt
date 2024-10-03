@@ -1,4 +1,4 @@
-package com.carrentalapp
+package com.trunghieu.carrentalapp
 
 import android.app.Application
 import android.content.res.Configuration

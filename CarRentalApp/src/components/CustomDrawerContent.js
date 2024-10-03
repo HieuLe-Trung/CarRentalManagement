@@ -1,20 +1,53 @@
-import React from 'react';
-import { View, Text, Image, StyleSheet,TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, Image, StyleSheet, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
-import Icon from 'react-native-vector-icons/FontAwesome'; // Thêm icon
+import Icon from 'react-native-vector-icons/FontAwesome';
+import axios from 'axios'; 
 
-const CustomDrawerContent = (props) => {
+const CustomDrawerContent = ({ token, navigation, ...props }) => {
+  const [userProfile, setUserProfile] = useState(null);
+  const [isLoading, setIsLoading] = useState(true); 
+
   const handleLogout = () => {
-    alert('Đăng xuất thành công!');
+    navigation.navigate('Login');
+    setTimeout(() => {
+      Alert.alert("Thông báo", "Đăng xuất thành công");
+    }, 100);
   };
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      setIsLoading(true); 
+      try {
+        const response = await axios.get('http://192.168.2.24:8000/user/current_user/', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setUserProfile(response.data);
+      } catch (error) {
+        console.error('Error fetching user profile:', error);
+      } finally {
+        setIsLoading(false); 
+      }
+    };
+
+    fetchUserProfile();
+  }, [token]);
 
   return (
     <DrawerContentScrollView {...props}>
-      <TouchableOpacity onPress={() => props.navigation.navigate('ProfileScreen')}>
+      <TouchableOpacity onPress={() => navigation.navigate('Profile', { token })}>
         <View style={styles.userInfoContainer}>
           <Image source={require('../assets/images/man.png')} style={styles.avatar} />
-          <Text style={styles.userName}>Lê Trung Hiếu</Text>
-          <Text style={styles.userEmail}>mtrunghieu12@gmail.com</Text>
+          {isLoading ? (
+            <ActivityIndicator size="small" color="#0000ff" />
+          ) : (
+            <>
+              <Text style={styles.userName}>{userProfile ? `${userProfile.first_name} ${userProfile.last_name}` : 'Người dùng'}</Text>
+              <Text style={styles.userEmail}>{userProfile ? userProfile.email : 'email@example.com'}</Text>
+            </>
+          )}
         </View>
       </TouchableOpacity>
 
@@ -31,7 +64,7 @@ const CustomDrawerContent = (props) => {
           key={index}
           label={item.label}
           icon={() => <Icon name={item.icon} size={20} color="#000" />}
-          onPress={() => props.navigation.navigate(item.route)}
+          onPress={() => navigation.navigate(item.route)}
         />
       ))}
 

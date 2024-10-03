@@ -3,7 +3,16 @@
     "name": "CarRentalApp",
     "slug": "CarRentalApp",
     "version": "1.0.0",
-    "jse": "jsc"
-  },
-  "name": "CarRentalApp"
+    "jse": "jsc",
+    "scheme": "CarRentalApp",
+    "permissions": [
+      "ACCESS_NETWORK_STATE",
+      "INTERNET"
+    ],"android": {
+      "package": "com.trunghieu.carrentalapp" 
+    },
+    "ios": {
+      "bundleIdentifier": "com.trunghieu.carrentalapp" 
+    }
+  }
 }
