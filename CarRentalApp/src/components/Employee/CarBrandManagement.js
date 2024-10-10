@@ -20,7 +20,7 @@ const CarBrandManagement = ({ route, navigation }) => {
     useEffect(() => {
         const fetchCarBrands = async () => {
             try {
-                const response = await fetch('http://192.168.2.24:8000/categories/');
+                const response = await fetch('http://192.168.1.17:8000/categories/');
                 if (response.ok) {
                     const data = await response.json();
                     setCarBrands(data);
@@ -46,7 +46,7 @@ const CarBrandManagement = ({ route, navigation }) => {
                     text: "Xóa",
                     onPress: async () => {
                         try {
-                            const response = await fetch(`http://192.168.2.24:8000/categories/${id}/`, {
+                            const response = await fetch(`http://192.168.1.17:8000/categories/${id}/`, {
                                 method: 'DELETE',
                                 headers: {
                                     'Authorization': `Bearer ${token}`,
@@ -85,7 +85,7 @@ const CarBrandManagement = ({ route, navigation }) => {
         }
 
         try {
-            const response = await fetch(`http://192.168.2.24:8000/categories/${currentBrand.id}/`, {
+            const response = await fetch(`http://192.168.1.17:8000/categories/${currentBrand.id}/`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -124,7 +124,7 @@ const CarBrandManagement = ({ route, navigation }) => {
         }
 
         try {
-            const response = await fetch('http://192.168.2.24:8000/categories/', {
+            const response = await fetch('http://192.168.1.17:8000/categories/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

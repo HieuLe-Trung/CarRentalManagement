@@ -1,5 +1,6 @@
 import { View, Text, Image, Platform, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, ScrollView, StyleSheet, Alert, ActivityIndicator } from "react-native";
 import welcome from "../../styles/welcome";
+import { baseURL } from '../../config';
 import React, { useState } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -46,7 +47,7 @@ const Register = ({ navigation }) => {
             formData.append('email', email);
             formData.append('password', password);
 
-        const response = await fetch('http://192.168.2.24:8000/user/', {
+        const response = await fetch(`${baseURL}user/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'multipart/form-data',
@@ -56,18 +57,19 @@ const Register = ({ navigation }) => {
             const data = await response.json();
             if (response.ok) {
                 setIsLoading(false);
-                navigation.navigate('Home');
+                navigation.navigate('Login');
             } else {
+                let errorMessage = '';
                 if (data.email && data.email.length > 0) {
-                    errorMessage = data.email[0];
+                    errorMessage += 'Email đã tồn tại.\n';
                 } else if (data.phone && data.phone.length > 0) {
-                    errorMessage = data.phone[0];
+                    errorMessage += 'Số điện thoại đã tồn tại.\n';
                 } else if (data.username && data.username.length > 0) {
-                    errorMessage = data.username[0];
+                    errorMessage += 'Username đã tồn tại.\n';
                 }
                 console.log('Error from API:', data);
                 setIsLoading(false);
-                Alert.alert('Lỗi', 'Đăng ký thất bại.');
+                Alert.alert('Lỗi', errorMessage || 'Đăng ký thất bại.');
             }
         } catch (error) {
             setIsLoading(false);

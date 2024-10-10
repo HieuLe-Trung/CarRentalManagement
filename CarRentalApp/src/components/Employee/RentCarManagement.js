@@ -20,7 +20,7 @@ const RentCarManagement = ({ route, navigation }) => {
     useEffect(() => {
         const fetchRentalCars = async () => {
             try {
-                const response = await fetch('http://192.168.2.24:8000/rent-car/');
+                const response = await fetch('http://192.168.1.17:8000/rent-car/');
                 if (response.ok) {
                     const data = await response.json();
                     setRentalCars(data);
@@ -46,7 +46,7 @@ const RentCarManagement = ({ route, navigation }) => {
                     text: "Xóa",
                     onPress: async () => {
                         try {
-                            const response = await fetch(`http://192.168.2.24:8000/rent-car/${id}/`, {
+                            const response = await fetch(`http://192.168.1.17:8000/rent-car/${id}/`, {
                                 method: 'DELETE',
                                 headers: {
                                     'Authorization': `Bearer ${token}`,
@@ -85,7 +85,7 @@ const RentCarManagement = ({ route, navigation }) => {
         }
 
         try {
-            const response = await fetch(`http://192.168.2.24:8000/rent-car/${currentCar.id}/`, {
+            const response = await fetch(`http://192.168.1.17:8000/rent-car/${currentCar.id}/`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -123,7 +123,7 @@ const RentCarManagement = ({ route, navigation }) => {
         }
 
         try {
-            const response = await fetch('http://192.168.2.24:8000/rent-car/', {
+            const response = await fetch('http://192.168.1.17:8000/rent-car/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

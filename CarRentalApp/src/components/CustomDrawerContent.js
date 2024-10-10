@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { baseURL } from '../config';
 import { View, Text, Image, StyleSheet, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -19,7 +20,7 @@ const CustomDrawerContent = ({ token, navigation, ...props }) => {
     const fetchUserProfile = async () => {
       setIsLoading(true); 
       try {
-        const response = await axios.get('http://192.168.2.24:8000/user/current_user/', {
+        const response = await axios.get(`${baseURL}user/current_user/`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -39,12 +40,12 @@ const CustomDrawerContent = ({ token, navigation, ...props }) => {
     <DrawerContentScrollView {...props}>
       <TouchableOpacity onPress={() => navigation.navigate('Profile', { token })}>
         <View style={styles.userInfoContainer}>
-          <Image source={require('../assets/images/man.png')} style={styles.avatar} />
+        <Image source={userProfile && userProfile.avatar ? { uri: userProfile.avatar } : require('../assets/images/man.png')} style={styles.avatar} />
           {isLoading ? (
             <ActivityIndicator size="small" color="#0000ff" />
           ) : (
             <>
-              <Text style={styles.userName}>{userProfile ? `${userProfile.first_name} ${userProfile.last_name}` : 'Người dùng'}</Text>
+              <Text style={styles.userName}>{userProfile ? `${userProfile.username} ` : 'Người dùng'}</Text>
               <Text style={styles.userEmail}>{userProfile ? userProfile.email : 'email@example.com'}</Text>
             </>
           )}

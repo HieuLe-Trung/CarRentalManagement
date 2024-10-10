@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { baseURL } from '../../config';
 import { View, Text, Image, StyleSheet, ActivityIndicator, SafeAreaView, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import axios from 'axios';
@@ -11,7 +12,7 @@ const Profile = ({ route, navigation }) => {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const response = await axios.get('http://192.168.2.24:8000/user/current_user/', {
+        const response = await axios.get(`${baseURL}user/current_user/`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -68,11 +69,13 @@ const Profile = ({ route, navigation }) => {
       </View>
       
       <View style={styles.profileInfo}>
-        <Image
-          source={{ uri: userProfile.avatar }}
-          style={styles.avatar}
-        />
-        <Text style={styles.name}>{`${userProfile.first_name || 'Xác thực ngay'} ${userProfile.last_name || 'Xác thực ngay'}`}</Text>
+      <Image source={userProfile.avatar ? { uri: userProfile.avatar } : require('../../assets/images/man.png')}style={styles.avatar}
+/>
+        <Text style={styles.name}>
+          {userProfile.first_name && userProfile.last_name
+            ? `${userProfile.first_name} ${userProfile.last_name}`
+            : userProfile.username}
+        </Text>
         <Text style={styles.joinDate}>{`Ngày tham gia: ${formatDate(userProfile.created_at)}`}</Text>
         
         <View style={styles.tripsContainer}>
@@ -85,21 +88,27 @@ const Profile = ({ route, navigation }) => {
         <View style={styles.infoContainer}>
           <TouchableOpacity style={styles.infoRow} onPress={() => handleEditInfo('license')}>
             <Text style={styles.infoLabel}>Giấy phép lái xe:</Text>
-            <Text style={[styles.infoText, !userProfile.license && styles.alertText]}>{userProfile.license || 'Xác thực ngay'}</Text>
+            <Text style={[styles.infoText, !userProfile.license && styles.alertText]}>
+              {userProfile.license || 'Xác thực ngay'}
+            </Text>
             <Text style={styles.editIcon}>{' >'}</Text>
           </TouchableOpacity>
           <View style={styles.separator} />
           
           <TouchableOpacity style={styles.infoRow} onPress={() => handleEditInfo('phone')}>
             <Text style={styles.infoLabel}>Số điện thoại:</Text>
-            <Text style={[styles.infoText, !userProfile.phone && styles.alertText]}>{userProfile.phone || 'Xác thực ngay'}</Text>
+            <Text style={[styles.infoText, !userProfile.phone && styles.alertText]}>
+              {userProfile.phone || 'Xác thực ngay'}
+            </Text>
             <Text style={styles.editIcon}>{' >'}</Text>
           </TouchableOpacity>
           <View style={styles.separator} />
           
           <TouchableOpacity style={styles.infoRow} onPress={() => handleEditInfo('email')}>
             <Text style={styles.infoLabel}>Email:</Text>
-            <Text style={[styles.infoText, !userProfile.email && styles.alertText]}>{userProfile.email || 'Xác thực ngay'}</Text>
+            <Text style={[styles.infoText, !userProfile.email && styles.alertText]}>
+              {userProfile.email || 'Xác thực ngay'}
+            </Text>
             <Text style={styles.editIcon}>{' >'}</Text>
           </TouchableOpacity>
         </View>
@@ -174,12 +183,15 @@ const styles = StyleSheet.create({
   infoLabel: {
     fontWeight: 'bold',
     marginRight: 10,
+    color: '#333',
+    fontSize: 16, // Tăng kích thước chữ
   },
   infoText: {
     color: '#333',
     flex: 1,
     textAlign: 'right',
     paddingHorizontal: 5,
+    fontSize: 16, // Tăng kích thước chữ
   },
   alertText: {
     backgroundColor: '#FFDAB9', 
@@ -190,6 +202,7 @@ const styles = StyleSheet.create({
   editIcon: {
     color: '#007BFF',
     marginLeft: 5,
+    fontSize: 16, // Tăng kích thước chữ
   },
   separator: {
     height: 1,

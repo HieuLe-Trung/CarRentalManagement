@@ -9,7 +9,7 @@ const HomeEmp = ({ route, navigation }) => {
     useEffect(() => {
         const fetchUserInfo = async () => {
             try {
-                const response = await fetch('http://192.168.2.24:8000/user/current_user/', {
+                const response = await fetch('http://192.168.1.17:8000/user/current_user/', {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${token}`,

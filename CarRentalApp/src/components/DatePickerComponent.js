@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import axios from 'axios';
+import { baseURL } from '../config';
 
-const DatePickerComponent = () => {
+const DatePickerComponent = ({ route, navigation }) => {
+  const { token, mode, carId } = route.params;
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [isDatePickerVisible, setDatePickerVisible] = useState(false);
   const [isTimePickerVisible, setTimePickerVisible] = useState(false);
   const [isPickingStartDate, setIsPickingStartDate] = useState(true); 
   const [isPickingStartTime, setIsPickingStartTime] = useState(false);
+  const [isAvailable, setIsAvailable] = useState(null);
+  const [AvailabilityDetail, setAvailabilityDetail] = useState(null);
   const [isPickingEndTime, setIsPickingEndTime] = useState(false);
   
   const today = new Date(); 
@@ -80,7 +85,68 @@ const DatePickerComponent = () => {
       setDatePickerVisible(true);
     }
   };
+  // Hàm tìm kiếm xe có sẵn
+  const searchAvailableCars = async () => {
+    if (!startDate || !endDate) {
+      Alert.alert('Thông báo', 'Vui lòng chọn cả thời gian thuê và trả.');
+      return;
+    }
 
+    const start = startDate.toISOString().slice(0, 19); // Lấy định dạng YYYY-MM-DDTHH:mm:ss
+    const end = endDate.toISOString().slice(0, 19)
+    const url = `${baseURL}rent-car/available/?start_date=${start}&end_date=${end}`;
+
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      
+      const availableCars = response.data; 
+  
+      navigation.navigate('CarList', { availableCars});
+  
+    } catch (error) {
+      console.error('Lỗi khi tìm kiếm xe có sẵn:', error);
+      Alert.alert('Thông báo', 'Đã xảy ra lỗi khi tìm kiếm xe có sẵn.');
+    }
+  };
+  // Kiểm tra xe trống
+  const checkCarAvailability = async () => {
+    try {
+      const response = await fetch(`${baseURL}rent-car/check_availability/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          car_id: carId,
+          start_date: startDate.toISOString(),
+          end_date: endDate.toISOString(),
+        }),
+      });
+      const data = await response.json();
+      if (data.available) {
+        setIsAvailable(true);
+        navigation.navigate('CarRentalRequest', { carId, startDate:startDate.toISOString(), endDate:endDate.toISOString(), token:token });
+      } else {
+        setIsAvailable(false);
+        setAvailabilityDetail(data.detail);
+        Alert.alert('Xe không trống. Vui lòng chọn khoảng thời gian khác.');
+      }
+    } catch (error) {
+      console.error('Error checking car availability:', error);
+    }
+  };
+  const handleCheck = () => {
+    if (mode === 'list') {
+      searchAvailableCars(); 
+    } else if (mode === 'check') {
+      checkCarAvailability(); 
+    }
+  };
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Chọn thời gian thuê</Text>
@@ -127,13 +193,12 @@ const DatePickerComponent = () => {
 
       <TouchableOpacity
         style={[styles.confirmButton, (!startDate || !endDate) && styles.buttonDisabled]}
-        onPress={() => alert(`Đã đặt từ ${startDate.toLocaleString('vi-VN')} đến ${endDate.toLocaleString('vi-VN')}`)}
+        onPress= {handleCheck}
         disabled={!startDate || !endDate}
       >
         <Text style={styles.confirmText}>Tìm xe</Text>
       </TouchableOpacity>
 
-      {/* Modal Date Picker */}
       <DateTimePickerModal
         isVisible={isDatePickerVisible}
         mode="date"
@@ -143,7 +208,6 @@ const DatePickerComponent = () => {
         maximumDate={new Date(2025, 11, 31)} 
       />
 
-      {/* Modal Time Picker */}
       <DateTimePickerModal
         isVisible={isTimePickerVisible}
         mode="time"

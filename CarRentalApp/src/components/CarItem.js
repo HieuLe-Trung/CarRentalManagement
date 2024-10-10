@@ -1,8 +1,12 @@
-import React from 'react';
+import React,{useState} from 'react';
+import { baseURL } from '../config';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
-const CarItem = ({ car, onFavoriteToggle, isForSale }) => {
+import axios from 'axios';
+const CarItem = ({ car,isForSale, token}) => {
+  const navigation = useNavigation();
+  const [isLiked, setIsLiked] = useState(car.liked);
   const formatPrice = (price) => {
     if (price >= 1_000_000) {
       return `${(price / 1_000_000).toFixed(1)} triệu`;
@@ -11,8 +15,22 @@ const CarItem = ({ car, onFavoriteToggle, isForSale }) => {
     }
     return `${price} VNĐ`;
   };
-
+  const onFavoriteToggle = async () => {
+    const url = `${baseURL}rent-car/${car.id}/like/`; 
+    try {
+      await axios.post(url, {}, {
+        headers: { Authorization: `Bearer ${token}` }
+      }); 
+      setIsLiked(!isLiked);
+    } catch (error) {
+      console.error('Error toggling like:', error);
+    }
+  };
+  const onCarPress = () => {
+    navigation.navigate('CarDetail', { carId: car.id, token });
+  };
   return (
+    <TouchableOpacity onPress={onCarPress}>
     <View style={styles.cardContainer}>
       <View style={styles.imageContainer}>
       <Image
@@ -20,7 +38,7 @@ const CarItem = ({ car, onFavoriteToggle, isForSale }) => {
         style={styles.carImage}
       />
         <TouchableOpacity style={styles.heartIcon} onPress={onFavoriteToggle}>
-          <Icon name="heart-o" size={24} color='#f00'/>
+          <Icon name="heart-o" size={24} color={isLiked ? '#f00' : '#000'}/>
         </TouchableOpacity>
       </View>
       <View style={styles.infoContainer}>
@@ -51,8 +69,10 @@ const CarItem = ({ car, onFavoriteToggle, isForSale }) => {
         </View>
       </View>
     </View>
+    </TouchableOpacity>
   );
 };
+
 
 const styles = StyleSheet.create({
   cardContainer: {
